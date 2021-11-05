@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous">
+    </script>
+
+    <title>COMP3031 - PHP server side</title>
+</head>
+
+<body>
+<h1>Test HTML Page for PHP server side code</h1>
+<label>Input the temperature: </label> <input id="temp" type="number"/><br>
+<label>Weather Condition</label>
+<select  id="cond">
+    <option value="sunny">Sunny</option>
+    <option value="raining">Raining</option>
+</select><br>
+<label>This will initiate a GET method</label><button onClick="getFunction()">AJAX Get</button><br>
+<label>This will initiate a POST method</label><button onClick="postFunction()">AJAX POST</button><br>
+
+<textarea id="display"></textarea>
+
+<script>
+
+var con = document.getElementById("cond")
+var tempfield = document.getElementById("temp")
+var dis =document.getElementById("display")
+
+function getFunction() {
+    
+    // Convert the JSON object to HTTP search parameter formatted string
+    var condition = con.value;
+    var temp = tempfield.value;
+    if (temp.trim() === "") {
+        alert ("Temp can not be empty")
+        return
+    }
+    var params =  {"temp": temp, "location": "Vancouver", "condition": condition};
+    console.log(params)
+    u = new URLSearchParams(params).toString();
+    fetch("php/niceweather.php?" + u)  //add the search parameter string to the URL and send
+    .then(response=>response.json())
+    .then(data=> dis.innerHTML = JSON.stringify(data));
+}
+
+function postFunction() {
+fetch('php/niceweather.php', {
+    method: 'POST',
+  }).then(response=>response.json())
+    .then(data=> dis.innerHTML = JSON.stringify(data));
+
+}
+
+</script>
+</body>
+
+
+
+
+</html>
