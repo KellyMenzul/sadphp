@@ -51,17 +51,19 @@ function getFunction() {
 }
 
 function postFunction() {
-fetch('php/niceweather.php', {
-    method: 'POST',
-  }).then(response=>response.json())
-    .then(data=> dis.innerHTML = JSON.stringify(data));
+    
+    var condition = con.value;
+    var temp = tempfield.value;
+    var params =  {"temp": temp, "location": "Vancouver", "condition": condition};
+    u = new URLSearchParams(params).toString();
+    
+    fetch('php/niceweather.php?' + u, {
+        method: 'POST',
+    }).then(response=>response.json())
+      .then(data=> dis.innerHTML = JSON.stringify(data));
 
 }
 
 </script>
 </body>
-
-
-
-
 </html>

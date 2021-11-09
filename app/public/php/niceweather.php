@@ -1,76 +1,54 @@
 <?php
 
-//
+global $message;
 
-//Super global list
-// $_SERVER
-// $_REQUEST
-// $_GET
-// $_POST
+// a. Determine the HTTP method used. (5 points)
+$method = $_SERVER['REQUEST_METHOD'];
 
-//Use super global variable to test for HTTP method
-//GET or POST
+// b-i. Use a suitable super global variable to find these parameters:
+// <temperature>, <location>, and <condition>. (4 points)
+$location = htmlentities($_GET['location']);
+$temp = htmlentities($_GET['temp']);
+$condition = htmlentities($_GET['condition']);
 
-// $_GET
+// b. If the method is GET
+// iii. Add an element to the JSON object called “message”. 
+// Set the value of this element following these rules: (3 points)
+if ($method === 'GET') {
+    // 1. If temp is < 16 and condition is raining, 
+    //    set message as “<location> is really cold and wet!”
+    if ((int)$temp < 16 && $condition == "raining") {
+        $message = $location . " is really cold and wet!";
 
-//Determine the http method used by the client 
-// $httpMethod =  = $_SERVER[?];
-
-$httpMethod = $_SERVER['REQUEST_METHOD'];
-if ($httpMethod == 'POST') {
-    
-    //else if Methos is post
-    //retrun the specified message
-    //echo
-    echo "this is the POST method"
-;
-} else  if (httpMethodd == 'GET') 
-    //if it is GET method
-    //use a suitable one to get the 
-    //parameters from the quest string
-
-    //foreach()
-    /*also test if the parameter exists
-    //$returnMessage is an associative array that holdes the information
-    $returnMessage["condition"] = //
-    $returnMessage["temperature"] = //
-    $returnMessage["location"] = //
-    */
-    
-    if (isset($_GET"""]))
-    {
-        echo "hi";
+    // 2. If temp is < 16 and condition is sunny, set message as 
+    //  “<location> is really cold but dry!”
+    } else if ((int)$temp < 16 && $condition == "sunny") {
+        $message = $location . " is really cold but dry!";
+    }
+    // 3. If temp is >=16 but <=29 and condition is raining, set message as 
+    // “Too bad it’s raining in <location>!”
+    else if ((int)$temp >= 16 && (int)$temp <= 29 && $condition == "raining") {
+        $message = "too bad it's raining in " . $location . "!";
+    }
+    // 4. If temp is >= 16 and condition is sunny, set message as “What a nice day in <location>”
+    else if ((int)$temp >= 16 && $condition == "sunny") {
+        $message = "What a nice day in " . $location;
+    }
+    // 5. Otherwise set it to “Have a nice day!”
+    else {
+        $message = 'Have a nice day!';
     };
-
+}
+// c. For any HTTP methods other than GET, return a properly JSON formatted string with a message element: 
+// “This method is not supported” (2 points)
+else {
+    $message = 'This method is not supported';
 };
-    
-    // if(isset($_GET['users'])){
-    //     if($_GET['users'] == 'all'){
-    //       echo "SHOW YOU THE USERS!";
-    //     }
-    //   }else {
-    //     echo "invalid request";
-    //   }
-  
 
-   // foreach()
-
-    //test for temperature and weather condition
-    //and create the response JSON object
-    //if  else  
-
-
-
-// '{"message":"implemet the functions as instructed"}'
-
-// }
-
-//After determining the HTTP method, 
-
-
-//Comment out this line when submit your assignment
-
-
-// '{"message":"implemet the functions as instructed"}'
+//b-ii. Assemble this information into a JSON object. (2 points)
+$myObj = new stdClass();
+$myObj->message = $message;
+$myJSON = json_encode($myObj);
+echo $myJSON;
 
 ?>
